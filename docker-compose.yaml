@@ -1,0 +1,28 @@
+version: "3.5"
+
+services:
+  web:
+    restart: always
+    container_name: dockerdev
+    build: ./
+    ports:
+      - "8000:8000"
+    environment:
+      DD_DB_HOST: db
+    command: /server
+    depends_on:
+      - db
+    volumes:
+      - ./base_teste.txt:/tmp/base_teste.txt
+  db:
+    restart: always
+    container_name: dockerdev-db
+    image: postgres:12.2-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: goland
+      POSTGRES_PASSWORD: goland
+      POSTGRES_DB: goland
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
